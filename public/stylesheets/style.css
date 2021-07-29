@@ -17,14 +17,14 @@ a {
   flex-direction: row-reverse;
 }
 
-.signin {
+.container-signin {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.row {
+.container-row {
   margin-bottom: 150px;
 }
 
