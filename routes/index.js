@@ -3,14 +3,21 @@ var router = express.Router();
 const mongoose = require('mongoose');
 
 var JourneyModel = require ('../models/journey')
+var UserModel = require('../models/user')
  
 var city = ["Paris","Marseille","Nantes","Lyon","Rennes","Melun","Bordeaux","Lille"]
 var date = ["2018-11-20","2018-11-21","2018-11-22","2018-11-23","2018-11-24"]
 
 /* GET sign in page. */
 router.get('/sign-in', function(req, res, next) {
-  res.render('signin', { title: 'Express' })
+  res.render('signin', {title: 'Express'})
 });
+
+/* POST sign in page */
+router.post('/sign-in', function(req, res, next) {
+  console.log('POST /sign-in req.body:', req.body.emailFromFront)
+  res.render('signin', {title: 'Express'})
+})
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
