@@ -8,9 +8,16 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var models = require('./routes/index')
-
+var session = require('express-session')
 var app = express();
 
+app.use( 
+  session({  
+    secret: 'maxgeolacapsule', 
+    resave: false, 
+    saveUninitialized: false,
+   }) 
+);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
