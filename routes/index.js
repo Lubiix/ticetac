@@ -14,9 +14,23 @@ router.get('/sign-in', function(req, res, next) {
 });
 
 /* POST sign in page */
-router.post('/sign-in', function(req, res, next) {
-  console.log('POST /sign-in req.body:', req.body.emailFromFront)
-  res.render('signin', {title: 'Express'})
+router.post('/sign-in', async function(req, res, next) {
+  // console.log('POST /sign-in req.body:', req.body.emailFromFront)
+  var users = await UserModel.findOne({
+    email: req.body.emailFromFront,
+    password: req.body.passwordFromFront
+  });
+  
+  if(users != null){
+    req.session.user = {
+      name: users.firstName,
+      id: users._id
+    }
+    res.redirect('/')
+  } else {
+    res.render('signin')
+  }
+
 })
 
 /* GET home page. */
