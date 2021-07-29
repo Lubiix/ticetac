@@ -4,9 +4,14 @@ const mongoose = require('mongoose');
 
 var JourneyModel = require ('../models/journey')
 
+/* GET sign in page. */
+router.get('/sign-in', function(req, res, next) {
+  res.render('signin', { title: 'Express' })
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('signin', { title: 'Express' });
+  res.render('home', { title: 'Express' });
 });
 
 
