@@ -10,7 +10,36 @@ var date = ["2018-11-20","2018-11-21","2018-11-22","2018-11-23","2018-11-24"]
 
 /* GET sign in page. */
 router.get('/sign-in', function(req, res, next) {
-  res.render('signin', {title: 'Express'})
+  res.render('signin', { title: 'Sign-in' })
+});
+
+/* GET sign-up page. */
+router.post('/sign-up', async function(req, res, next) {
+  console.log(">>req.body", req.body)
+  var searchUser = await UserModel.findOne({
+    email: req.body.emailFromFront
+  })
+  if(!searchUser && req.body.nameFromFront.length > 0 && req.body.lastNameFromFront > 0 && req.body.emailFromFront > 0 && req.body.passwordFromFront > 0){
+  var newUser = new UserModel ({
+    firstName : req.body.nameFromFront,
+    lastName : req.body.lastNameFromFront,
+    email: req.body.emailFromFront,
+    password: req.body.passwordFromFront
+  })
+
+  var userSaved = await newUser.save()
+  console.log(">>userSaved", newUser)
+  
+  req.session.user = {
+    name: userSaved.firstName,
+    id: userSaved._id
+  }
+  console.log(">>req.session.user", req.session.user)
+  
+  res.redirect('/')
+  }else{
+  res.redirect('/sign-in')
+  }
 });
 
 /* POST sign in page */
