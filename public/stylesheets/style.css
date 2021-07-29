@@ -7,21 +7,23 @@ background: -webkit-linear-gradient(top,  #7db9e8 65%,#207cca 100%); /* Chrome10
 background: linear-gradient(to bottom,  #7db9e8 65%,#207cca 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7db9e8', endColorstr='#207cca',GradientType=0 ); /* IE6-9 */
   background-repeat: no-repeat;
+  height: 100vh;
 }
 
 a {
   color: #00B7FF;
 }
 
+/*----------CSS Geoffroy -------------*/
+
 #navbarNav {
   flex-direction: row-reverse;
 }
 
 .container-signin {
-  height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
+  margin-top: 100px;
 }
 
 .row-signin {
@@ -33,11 +35,15 @@ a {
 }
 
 
+/*----------CSS Maxime -------------*/
+
+.home-main {
+  margin-top: 100px;
+}
 
 .input-journey {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
 }
 
 .title {
@@ -45,6 +51,18 @@ a {
   margin-left: -30px;
 }
 
-input {
+.from, to {
   margin-right: 5px;
+}
+
+#calendar, #bouton-home {
+  margin-left: 5px;
+}
+
+
+
+.landmark {
+  height: 200px;
+  margin-left: 200px;
+  margin-top:100px;
 }

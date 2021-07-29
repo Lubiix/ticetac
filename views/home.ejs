@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Ticetac</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <%- include('./partials/header')  %>  
+    <%- include('./partials/navbar')  %>  
 
     <div class="container">
       <div class="row">
         <div class="col">
-          <div>
+          <div class="home-main">
             <h2 class="title">One-way ticket</h1>
             <div class="input-journey">
-              <input type="text" class="from" id="exampleFormControlInput1" placeholder="From: Paris, Marseille.."> <input type="text" class="to" id="exampleFormControlInput1" placeholder="To:Lille, Nantes..">
-              <label for="start"></label>
-              <input type="date" id="start" name="trip-start" value="2018-07-22"    min="2018-01-01" max="2018-12-31"> 
-              <button type="button" class="btn btn-danger">Go</button>
+              <form action="/" method="POST">
+                <input type="text" name="departure"class="from" placeholder="From: Paris, Marseille.."> <input type="text" name="arrival" class="to"  placeholder="To:Lille, Nantes..">
+                <input type="date" id="calendar" name="date" value="2018-11-22"    min="2018-01-01" max="2018-12-31"> 
+                <button type="submit" href="/ticket-available" id="bouton-home" class="btn btn-danger">Go</button>
+              </form>
             </div>
+            <img class="landmark" src="../images/landmark.png" alt="">
           </div>
         </div>
       </div>
