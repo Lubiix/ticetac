@@ -18,31 +18,23 @@ a {
   flex-direction: row-reverse;
 }
 
-.container {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
-.row {
-  margin-bottom: 150px;
-}
 
 #logo {
   margin-right: 10px;
 }
+
+
+
 .input-journey {
   display: flex;
   justify-content: center;
   margin-top: 30px;
 }
 
-
-
 .title {
   color: white;
-  margin-left: 200px;
+  margin-left: -30px;
 }
 
 input {
