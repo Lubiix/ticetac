@@ -10,6 +10,7 @@ var date = ["2018-11-20","2018-11-21","2018-11-22","2018-11-23","2018-11-24"]
 
 /* GET sign in page. */
 router.get('/sign-in', function(req, res, next) {
+  console.log('/GET my last trip USER', req.session.user)
   res.render('signin')
 });
 
@@ -65,12 +66,13 @@ router.post('/sign-in', async function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  console.log('req.session.user', req.session.user);
   res.render('home');
 });
 
 /* POST home page*/ 
 router.post('/', async function(req, res, next) {
-  console.log('POST / req.body', req.body);
+  // console.log('POST / req.body', req.body);
   var search = await JourneyModel.find();
   var dateFront = req.body.date;
   req.body.date = new Date (`${req.body.date}T00:00:00.000Z`);
@@ -98,17 +100,25 @@ router.get('/ticket-available', function(req, res, next) {
 });
 
 router.get('/my-tickets', async function(req, res, next) {
-  console.log('>>GET /my-tickets', req.query.idJourney)
+  // console.log('>>GET /my-tickets', req.query.idJourney)
   var search = await JourneyModel.findById(req.query.idJourney)
   console.log(search)
   myTickets = [];
   myTickets.push(search);
+
+  var last = await UserModel.findById(req.session.user.id)
+  console.log(last.lastTrip);
+  last.lastTrip = myTickets
+   
+
   console.log('GET myTickets', myTickets);
   res.render('my-tickets')
 })
 
-router.get('/my-last-trips', function(req, res, next) {
-  res.render('my-last-trips')
+router.get('/my-last-trips', async function(req, res, next) {
+  var last = await UserModel.findById(req.session.user.id)
+  console.log('>>>last trip',last.lastTrip);
+  res.render('my-last-trips', {last})
 })
 
 router.get('/erreur', function(req, res, next) {
