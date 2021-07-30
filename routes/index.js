@@ -70,19 +70,22 @@ router.get('/', function(req, res, next) {
 
 /* POST home page*/ 
 router.post('/', async function(req, res, next) {
-  console.log('POST / req.body: ', req.body);
-
   var search = await JourneyModel.find();
-  // console.log('POST / journeys', search);
-  
+  req.body.date = new Date (`${req.body.date}T00:00:00.000Z`);
+  var journeyAvailable = [];
+  var disponible = false;
   for (var index = 0; index < search.length; index++) {
-    if(search[index].departure === req.body.departure){
-      res.redirect('/ticket-available')
+    if(search[index].departure === req.body.departure && search[index].arrival === req.body.arrival && search[index].date.toString() == req.body.date.toString()){
+      journeyAvailable.push(search[index]);
+      disponible = true;
     } 
-    else {
-      res.redirect ('/erreur')
-    }
   }
+
+  if (disponible){
+    res.redirect('/ticket-available')
+  } else {
+    res.redirect ('/erreur')
+  }  
 })
 
 router.get('/ticket-available', function(req, res, next) {
