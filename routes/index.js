@@ -65,7 +65,11 @@ router.post('/sign-in', async function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  if (req.session.user == undefined) {
+    res.redirect('sign-in')
+  }else{
   res.render('home');
+  }
 });
 
 /* POST home page*/ 
