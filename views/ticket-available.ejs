@@ -10,35 +10,24 @@
     <div class = "container container-ticket">
       <div class="row row-ticket">
         <div class="col-8 container-fluid">
-          <h1 class="text-white">Ticket available on 02/08 :</h1>
+          <h1>Ticket available on <%= dateFront %> :</h1>
+          <% for (var index = 0; index < journeyAvailable.length; index++){
+            var journey = journeyAvailable[index]%>
           <ul class="list-group" id="ticket-available">
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                <h5 class="mb-1">Paris / Lille</h5>
+                <h5 class="mb-1"><%= journey.departure %> / <%= journey.arrival %></h5>
                 <div>
-                  <small class="text-muted">train departure at : 15:00 pm</small>
+                  <small class="text-muted">train departure at : <%= journey.departureTime %></small>
                 </div>
                 <div class="">
-                  <h5 class="mb-1">93€</h5>
+                  <h5 class="mb-1"><%= journey.price %>€</h5>
                 </div>
                   <div class="">
                   <button type="submit" class="btn btn-danger">OK</button>
                 </div>
               </li>     
           </ul>
-          <ul class="list-group" id="ticket-available">
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-              <h5 class="mb-1">Paris / Lille</h5>
-              <div>
-                <small class="text-muted">train departure at : 15:00 pm</small>
-              </div>
-              <div class="">
-                <h5 class="mb-1">93€</h5>
-              </div>
-                <div class="">
-                <button type="submit" class="btn btn-danger">OK</button>
-              </div>
-            </li>     
-        </ul>
+          <%}%>
         </div>
       </div>
     </div>

@@ -72,6 +72,7 @@ router.get('/', function(req, res, next) {
 router.post('/', async function(req, res, next) {
   console.log('POST / req.body', req.body);
   var search = await JourneyModel.find();
+  var dateFront = req.body.date;
   req.body.date = new Date (`${req.body.date}T00:00:00.000Z`);
   var journeyAvailable = [];
   var disponible = false;
@@ -81,16 +82,17 @@ router.post('/', async function(req, res, next) {
       disponible = true;
     } 
   }
-
+  console.log('date Front', dateFront);
+  console.log('Voyage Dispo', journeyAvailable);
   if (disponible){
-    res.redirect('/ticket-available')
+    res.render('ticket-available',{journeyAvailable, dateFront})
   } else {
     res.redirect ('/erreur')
   }  
 })
 
 router.get('/ticket-available', function(req, res, next) {
-  res.render('ticket-available');
+  res.render('ticket-available',{journeyAvailable});
 });
 
 router.get('/my-tickets', function(req, res, next) {
