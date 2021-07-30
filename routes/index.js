@@ -89,6 +89,10 @@ router.get('/ticket-available', function(req, res, next) {
   res.render('ticket-available');
 });
 
+router.get('/my-tickets', function(req, res, next) {
+  res.render('my-tickets')
+})
+
 router.get('/erreur', function(req, res, next) {
   res.render('erreur');
 });
