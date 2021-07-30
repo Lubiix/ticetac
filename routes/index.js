@@ -85,8 +85,10 @@ router.post('/', async function(req, res, next) {
   console.log('date Front', dateFront);
   console.log('Voyage Dispo', journeyAvailable);
   if (disponible){
+    console.log('-------0-----------')
     res.render('ticket-available',{journeyAvailable, dateFront})
   } else {
+    console.log('-------1-----------')
     res.redirect ('/erreur')
   }  
 })
@@ -95,7 +97,13 @@ router.get('/ticket-available', function(req, res, next) {
   res.render('ticket-available',{journeyAvailable});
 });
 
-router.get('/my-tickets', function(req, res, next) {
+router.get('/my-tickets', async function(req, res, next) {
+  console.log('>>GET /my-tickets', req.query.idJourney)
+  var search = await JourneyModel.findById(req.query.idJourney)
+  console.log(search)
+  myTickets = [];
+  myTickets.push(search);
+  console.log('GET myTickets', myTickets);
   res.render('my-tickets')
 })
 
@@ -106,6 +114,8 @@ router.get('/my-last-trips', function(req, res, next) {
 router.get('/erreur', function(req, res, next) {
   res.render('erreur');
 });
+
+
 // // Remplissage de la base de donnée, une fois suffit
 // router.get('/save', async function(req, res, next) {
 

@@ -22,27 +22,16 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <% for (var index = 0; index < myTickets.length; index++){
+                        var myTicket = myTickets[index]%>
                       <tr>
                         <th scope="row">1</th>
-                        <td>Paris / Lille</td>
+                        <td><%= myTicket.departure %> / <%= myTicket.arrival %></td>
                         <td>02/08/2019</td>
-                        <td>15:00 pm</td>
-                        <td>93€</td>
+                        <td><%= myTicket.departureTime %></td>
+                        <td><%= myTicket.price %>€</td>
                       </tr>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Paris / Lille</td>
-                        <td>02/08/2019</td>
-                        <td>15:00 pm</td>
-                        <td>93€</td>
-                      </tr>
-                      <tr class="table-danger">
-                        <th scope="col">Total</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col">218€</th>
-                      </tr>
+                      <%}%>
                     </tbody>
                   </table>
 
