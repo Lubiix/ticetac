@@ -70,6 +70,7 @@ router.get('/', function(req, res, next) {
 
 /* POST home page*/ 
 router.post('/', async function(req, res, next) {
+  console.log('POST / req.body', req.body);
   var search = await JourneyModel.find();
   req.body.date = new Date (`${req.body.date}T00:00:00.000Z`);
   var journeyAvailable = [];
