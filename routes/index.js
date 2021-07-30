@@ -97,6 +97,10 @@ router.get('/my-tickets', function(req, res, next) {
   res.render('my-tickets')
 })
 
+router.get('/my-last-trips', function(req, res, next) {
+  res.render('my-last-trips')
+})
+
 router.get('/erreur', function(req, res, next) {
   res.render('erreur');
 });

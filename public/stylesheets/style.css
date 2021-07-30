@@ -72,3 +72,11 @@ a {
 .table-borderless {
   background-color: #FFFF;
 }
+
+.container-erreur {
+  margin-top: 70px;
+}
+
+.text-white {
+  color: #FFFF;
+}
