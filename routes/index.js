@@ -76,22 +76,23 @@ router.get('/', function(req, res, next) {
 /* POST home page*/ 
 router.post('/', async function(req, res, next) {
   // console.log('POST / req.body', req.body);
-  var search = await JourneyModel.find();
+  // var search = await JourneyModel.find();
   var dateFront = req.body.date;
   req.body.date = new Date (`${req.body.date}T00:00:00.000Z`);
   var journeyAvailable = [];
   var disponible = false;
-  for (var index = 0; index < search.length; index++) {
-    if(search[index].departure === req.body.departure && search[index].arrival === req.body.arrival && search[index].date.toString() == req.body.date.toString()){
-      journeyAvailable.push(search[index]);
-      disponible = true;
-    } 
-  }
-  // console.log('date Front', dateFront);
-  // console.log('Voyage Dispo', journeyAvailable);
+
+  var journeys = await JourneyModel.find({
+    departure: req.body.departure,
+    arrival: req.body.arrival,
+    date: req.body.date
+  });
+  disponible = true;
+  console.log('journeys', journeys)
+  
   if (disponible){
     console.log('-------0-----------')
-    res.render('ticket-available',{journeyAvailable, dateFront})
+    res.render('ticket-available',{journeyAvailable: journeys, dateFront})
   } else {
     console.log('-------1-----------')
     res.redirect ('/erreur')
@@ -106,7 +107,7 @@ router.get('/my-tickets', async function(req, res, next) {
   // console.log('>>GET /my-tickets', req.query.idJourney)
   var search = await JourneyModel.findById(req.query.idJourney)
   // console.log('MY TICKET search', search)
-  myTickets = [];
+  var myTickets = [];
   myTickets.push(search);
 
   var last = await UserModel.findById(req.session.user.id)
