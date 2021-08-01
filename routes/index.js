@@ -5,27 +5,18 @@ const mongoose = require('mongoose');
 var JourneyModel = require ('../models/journey')
 var UserModel = require('../models/user')
 
-var city = ["Paris","Marseille","Nantes","Lyon","Rennes","Melun","Bordeaux","Lille"]
-var date = ["2018-11-20","2018-11-21","2018-11-22","2018-11-23","2018-11-24"]
-
 /* GET sign in page. */
 router.get('/sign-in', function(req, res, next) {
-<<<<<<< HEAD
-  // console.log('/GET my last trip USER', req.session.user)
-=======
->>>>>>> maxime
   res.render('signin')
 });
 
 /* GET sign-up page. */
 router.post('/sign-up', async function(req, res, next) {
-<<<<<<< HEAD
-  // console.log(">>req.body", req.body)
-=======
->>>>>>> maxime
+  
   var searchUser = await UserModel.findOne({
     email: req.body.emailFromFront
   })
+  
   if(!searchUser && req.body.nameFromFront.length > 0 && req.body.lastNameFromFront.length > 0 && req.body.emailFromFront.length > 0 && req.body.passwordFromFront.length > 0){
     var newUser = new UserModel ({
       firstName : req.body.nameFromFront,
