@@ -10,13 +10,11 @@ var date = ["2018-11-20","2018-11-21","2018-11-22","2018-11-23","2018-11-24"]
 
 /* GET sign in page. */
 router.get('/sign-in', function(req, res, next) {
-  console.log('/GET my last trip USER', req.session.user)
   res.render('signin')
 });
 
 /* GET sign-up page. */
 router.post('/sign-up', async function(req, res, next) {
-  console.log(">>req.body", req.body)
   var searchUser = await UserModel.findOne({
     email: req.body.emailFromFront
   })
@@ -29,13 +27,13 @@ router.post('/sign-up', async function(req, res, next) {
     })
     
     var userSaved = await newUser.save()
-    console.log(">>userSaved", newUser)
+    // console.log(">>userSaved", newUser)
     
     req.session.user = {
       name: userSaved.firstName,
       id: userSaved._id
     }
-    console.log(">>req.session.user", req.session.user)
+    // console.log(">>req.session.user", req.session.user)
     
     res.redirect('/')
   }else{
@@ -46,7 +44,6 @@ router.post('/sign-up', async function(req, res, next) {
 
 /* POST sign in page */
 router.post('/sign-in', async function(req, res, next) {
-  // console.log('POST /sign-in req.body:', req.body.emailFromFront)
   var users = await UserModel.findOne({
     email: req.body.emailFromFront,
     password: req.body.passwordFromFront
@@ -55,7 +52,8 @@ router.post('/sign-in', async function(req, res, next) {
   if(users != null){
     req.session.user = {
       name: users.firstName,
-      id: users._id
+      id: users._id,
+      tickets : []
     }
     res.redirect('/')
   } else {
@@ -66,117 +64,80 @@ router.post('/sign-in', async function(req, res, next) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log('req.session.user', req.session.user);
+  if (req.session.user === undefined) {
+    res.redirect('/sign-in')
+  }
   res.render('home');
 });
 
 /* POST home page*/ 
 router.post('/', async function(req, res, next) {
-  // console.log('POST / req.body', req.body);
-  var search = await JourneyModel.find();
   var dateFront = req.body.date;
   req.body.date = new Date (`${req.body.date}T00:00:00.000Z`);
-  var journeyAvailable = [];
   var disponible = false;
-  for (var index = 0; index < search.length; index++) {
-    if(search[index].departure === req.body.departure && search[index].arrival === req.body.arrival && search[index].date.toString() == req.body.date.toString()){
-      journeyAvailable.push(search[index]);
-      disponible = true;
-    } 
-  }
-  console.log('date Front', dateFront);
-  console.log('Voyage Dispo', journeyAvailable);
+  
+  var journeys = await JourneyModel.find(
+    {
+      departure: req.body.departure,
+      arrival: req.body.arrival,
+      date: req.body.date
+    }
+  );
+
+  disponible = true;
+
   if (disponible){
     console.log('-------0-----------')
-    res.render('ticket-available',{journeyAvailable, dateFront})
+    res.render('ticket-available',{journeyAvailable: journeys, dateFront})
   } else {
     console.log('-------1-----------')
     res.redirect ('/erreur')
   }  
 })
 
+/* GET ticket-available */
 router.get('/ticket-available', function(req, res, next) {
   res.render('ticket-available',{journeyAvailable});
 });
 
+
+/* GET my-tickets */
 router.get('/my-tickets', async function(req, res, next) {
-  // console.log('>>GET /my-tickets', req.query.idJourney)
-  var search = await JourneyModel.findById(req.query.idJourney)
-  console.log(search)
-  myTickets = [];
-  myTickets.push(search);
+  /* On verifie que l'utilisateur est connecté */
+  if (req.session.user === undefined) {
+    res.redirect('/sign-in')
+  }
 
-  var last = await UserModel.findById(req.session.user.id)
-  console.log(last.lastTrip);
-  last.lastTrip = myTickets
+  /* On met les tickets dans req.session.user.tickets : []  */
+  var userTickets = await JourneyModel.findById(req.query.idJourney)
+  req.session.user.tickets.push(userTickets);
+
+  /* On push les tickets dans my last trips */
+  var user = await UserModel.findById(req.session.user.id)
+  for (var index = 0; index < req.session.user.tickets.length; index++ ) {
+      var ticket = req.session.user.tickets[index]
+      user.lastTrip.push(ticket);
+  }
+  var tripSaved = await user.save(); // On enregistre les last trip dans la bdd 
    
-
-  console.log('GET myTickets', myTickets);
-  res.render('my-tickets')
+  res.render('my-tickets', {myTickets: req.session.user.tickets})
 })
 
+
+/* GET my-last-trip */
 router.get('/my-last-trips', async function(req, res, next) {
-  var last = await UserModel.findById(req.session.user.id)
-  console.log('>>>last trip',last.lastTrip);
-  res.render('my-last-trips', {last})
+  var user = await UserModel.findById(req.session.user.id)
+  // console.log('GET my-last-trip req.session.user', req.session.user);
+  // console.log('GET my-last-trip await user', user);
+  // console.log('GET /my-last-trips user.lastTrip', user.lastTrip)
+  res.render('my-last-trips', {userFront: user.lastTrip})
 })
 
+
+/* GET erreur */
 router.get('/erreur', function(req, res, next) {
   res.render('erreur');
 });
 
-
-// // Remplissage de la base de donnée, une fois suffit
-// router.get('/save', async function(req, res, next) {
-
-//   // How many journeys we want
-//   var count = 300
-
-//   // Save  ---------------------------------------------------
-//     for(var i = 0; i< count; i++){
-
-//     departureCity = city[Math.floor(Math.random() * Math.floor(city.length))]
-//     arrivalCity = city[Math.floor(Math.random() * Math.floor(city.length))]
-
-//     if(departureCity != arrivalCity){
-
-//       var newUser = new JourneyModel ({
-//         departure: departureCity , 
-//         arrival: arrivalCity, 
-//         date: date[Math.floor(Math.random() * Math.floor(date.length))],
-//         departureTime:Math.floor(Math.random() * Math.floor(23)) + ":00",
-//         price: Math.floor(Math.random() * Math.floor(125)) + 25,
-//       });
-       
-//        await newUser.save();
-
-//     }
-
-//   }
-//   res.render('index', { title: 'Express' });
-// });
-
-
-// Cette route est juste une verification du Save.
-// Vous pouvez choisir de la garder ou la supprimer.
-// router.get('/result', function(req, res, next) {
-
-//   // Permet de savoir combien de trajets il y a par ville en base
-//   for(i=0; i<city.length; i++){
-
-//     JourneyModel.find( 
-//       { departure: city[i] } , //filtre
-  
-//       function (err, Journey) {
-
-//           console.log(`Nombre de trajets au départ de ${Journey[0].departure} : `, Journey.length);
-//       }
-//     )
-
-//   }
-
-
-//   res.render('index', { title: 'Express' });
-// });
 
 module.exports = router;

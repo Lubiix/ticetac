@@ -22,26 +22,24 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% for (var index = 0; index < last.lastTrip.length; index++){
-                        var last = last.lastTrip[index]%>
+                      <% for (var index = 0; index < userFront.length; index++){%>
                       <tr>
-                        <th scope="row">1</th>
-                        <td><%= last.departure %> / <%= last.arrival %></td>
-                        <td><%= last.date.toString() %></td>
-                        <td><%= last.departureTime %></td>
-                        <td><%= last.price %>€</td>
+                        <th scope="row"><%=index%></th>
+                        <td><%= userFront.departure %> / <%= userFront.arrival %></td>
+                        <td></td>
+                        <td><%= userFront.departureTime %></td>
+                        <td><%= userFront.price %>€</td>
                       </tr>
                       <%}%>
                     </tbody>
                   </table>
-
             </div>
         </div>
     </div>
     <div class="container">
       <div class="row">
         <div class="col offset-10">
-          <button type="button" class="btn btn-danger">Home</button>
+          <a href="/"><button type="button" class="btn btn-danger">Home</button></a>
         </div>
       </div>
     </div>
