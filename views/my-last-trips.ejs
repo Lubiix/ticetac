@@ -25,10 +25,10 @@
                       <% for (var index = 0; index < userFront.length; index++){%>
                       <tr>
                         <th scope="row"><%=index%></th>
-                        <td><%= userFront.departure %> / <%= userFront.arrival %></td>
-                        <td></td>
-                        <td><%= userFront.departureTime %></td>
-                        <td><%= userFront.price %>€</td>
+                        <td><%= userFront[index].departure %> / <%= userFront[index].arrival %></td>
+                        <td><%= userFront[index].date.toString() %></td>
+                        <td><%= userFront[index].departureTime %></td>
+                        <td><%= userFront[index].price %>€</td>
                       </tr>
                       <%}%>
                     </tbody>

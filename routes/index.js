@@ -26,13 +26,11 @@ router.post('/sign-up', async function(req, res, next) {
     })
     
     var userSaved = await newUser.save()
-    // console.log(">>userSaved", userSaved)
     
     req.session.user = {
       name: userSaved.firstName,
       id: userSaved._id
     }
-    // console.log(">>req.session.user", req.session.user)
     
     res.redirect('/')
   }else{
@@ -126,10 +124,14 @@ router.get('/my-tickets', async function(req, res, next) {
 
 /* GET my-last-trip */
 router.get('/my-last-trips', async function(req, res, next) {
+  /* On verifie que l'utilisateur est connecté */
+  if (req.session.user == undefined) {
+    res.redirect('sign-in')
+  }
+
+  /* On recupere l'utilisateur dans la BDD pour afficher ses last trips via le sous document */
   var user = await UserModel.findById(req.session.user.id)
-  // console.log('GET my-last-trip req.session.user', req.session.user);
-  // console.log('GET my-last-trip await user', user);
-  // console.log('GET /my-last-trips user.lastTrip', user.lastTrip)
+  console.log('GET my-last-trip await user', user);
   res.render('my-last-trips', {userFront: user.lastTrip})
 })
 
